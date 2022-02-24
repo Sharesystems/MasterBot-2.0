@@ -35,4 +35,3 @@ node index.js
 ### Support
 Discord: https://discord.gg/c3CgfDQVJF or PLΞXUS#3294
 
-### HAVE FUN!
