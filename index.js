@@ -7,6 +7,7 @@ const WebSocket = require("ws");
 const fetch = require("node-fetch");
 const chalk = require("chalk");
 const xpfile = require("./datas/xp.json")
+const random = require("random")
 console.log(chalk.blue(`[Deamon] loading Files...`));
 console.log("")
 console.log("")
@@ -45,8 +46,8 @@ client.on("message", message => {
         let embed = new Discord.MessageEmbed()
             .setTitle("Changelog")
             .setDescription("Version: "+version)
-            .addField("🛡 Updates:", "```Really? All is new :)```")
-            .addField("📅 Release:", "```22.02.2022```")
+            .addField("🛡 Updates:", "```\n[+] New Help Embed\n[+] Random Command\n[+] IQ Command\n```")
+            .addField("📅 Release:", "```24.02.2022```")
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
@@ -58,14 +59,10 @@ client.on("message", message => {
     if (message.content == prefix+"help"){
         let embed = new Discord.MessageEmbed()
             .setTitle("Commands")
-            .addField("Command","description")
-            .addField(`${prefix}help`, `shows this menu`)
-            .addField(`${prefix}bots`, `shows the number of bots`)
-            .addField(`${prefix}owner`, `shows the owner of this server`)
-            .addField(`${prefix}ping`, `shows your ping`)
-            .addField(`${prefix}version`, `opens the version manager`)
-            .addField(`${prefix}poll`, "starts a poll")
-            .addField(`${prefix}rank`, "shows your XP rate")
+            .addField(`Imporant Commands`, `${prefix}help - shows this menu\n${prefix}version - opens the version manager\n${prefix}changelog - shows the changelog\n${prefix}ping - shows your ping`)
+            .addField("Fun", `${prefix}iq - shows your IQ\n${prefix}random - shows a random number\n${prefix}rank - shows your XP rate`)
+            .addField("Infos", `${prefix}bots - the number of Bots\n${prefix}owner - shows the Ownertag`)
+            .addField("Admin", `${prefix}nuke - delete all messages\n${prefix}poll - start a poll`)
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
@@ -120,9 +117,34 @@ client.on("message", message => {
                 }
             })
     }
+    if (parts[0] == prefix + 'nuke') {
+        if (!message.member.hasPermission('MANAGE_CHANNELS')) {
+            let embed = new Discord.MessageEmbed()
+                .setTitle("❌ No Perms")
+                .setDescription("You do not have enough rights for this command!")
+                .setFooter(`${name} | version ${version}`)
+                .setThumbnail(profilpictureurl)
+                .setColor(theme)
+            return message.channel.send(embed)
+        }
+        message.channel.clone().then(channel => {
+            channel.setPosition(message.channel.position)
+            let embed = new Discord.MessageEmbed()
+                .setTitle("✅ Channel have been genuked")
+                .setColor(theme)
+                .setThumbnail(profilpictureurl)
+                .setFooter(`${name} | version ${version}`)
+                .setImage("https://i.gifer.com/6Ip.gif")
+                .setDescription("This channel has been successfully destroyed! All messages have been deleted.")
+            channel.send(embed)
+            console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}nuke`))
+        })
+        message.channel.delete()
+    }
 })
 //Demo Commands
 client.on("message", function (message){
+    let parts = message.content.split(" ");
 
     if (message.content == prefix+'bots') {
         message.channel.send(`**${message.guild.name}** has **${message.guild.members.cache.filter(m => m.user.bot).size}** Bot(s) 🤖`)
@@ -150,6 +172,14 @@ client.on("message", function (message){
     if (message.content == prefix+'owner') {
         message.channel.send(`The Owner of **${message.guild.name}** is **${message.guild.owner.user.tag}**`)
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}owner`))
+    }
+    else if (parts[0].toLowerCase() == prefix + `random`) {
+        message.channel.send(`loading...`).then(m => m.edit(`Your Random Number is: ${random.int(1, 99999999)}`))
+        console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}random`))
+    }
+    else if (parts[0].toLowerCase() == prefix + `iq`) {
+        message.channel.send(`Scann IQ...`).then(m => m.edit(`The 100% accurate measurement showed that you have **${random.int(1, 200)}**IQ :exploding_head:`))
+        console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}iq`))
     }
 })
 client.on("message", function (message) {

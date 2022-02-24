@@ -1,6 +1,6 @@
 {
-  "name": "MasterBot",
-  "version": "1.0.0",
+  "name": "masterbot",
+  "version": "1.1.0",
   "description": "You don't know how I code my own Discord Bot. Here's a simple example!",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
     "fetch": "^1.1.0",
     "fs": "^0.0.1-security",
     "node-fetch": "^2.6.1",
+    "random": "^3.0.6",
     "version": "^0.1.2",
     "ws": "^8.4.2"
   }
