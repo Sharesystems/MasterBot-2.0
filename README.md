@@ -9,7 +9,7 @@
 |Funcommands| 1.0.0  | :white_check_mark: |
 |Wallpaper  | -   | :red_circle: |
 
-Current version: **1.0.0**
+Current version: **1.1.0**
 
 ### Installation
 ```
