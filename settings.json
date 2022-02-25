@@ -4,5 +4,6 @@
     "name": "Your Name",
     "status": "By Plexus",
     "theme": "#1214ff",
-    "profilpictureurl": "https://cdn.discordapp.com/attachments/937343599593529352/945728718737928212/Q-Bot.png"   
+    "profilpictureurl": "https://cdn.discordapp.com/attachments/937343599593529352/945728718737928212/Q-Bot.png",
+    "beta": "false"  
 }   

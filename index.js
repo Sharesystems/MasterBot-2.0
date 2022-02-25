@@ -1,3 +1,6 @@
+//----------- Startup -----------//
+
+
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require ("fs");
@@ -8,24 +11,42 @@ const fetch = require("node-fetch");
 const chalk = require("chalk");
 const xpfile = require("./datas/xp.json")
 const random = require("random")
-console.log(chalk.blue(`[Deamon] loading Files...`));
-console.log("")
-console.log("")
 
-//API
+//----------- Loading -----------//
+
+console.log(chalk.blue(`[Deamon] loading Files...`));
+console.log(chalk.blue(`[Blacklist] Check Blacklist...`))
+let blacklist = fs.readFileSync("./api/blacklist/blacklist.txt", "utf8");
+if (blacklist > 1) {
+    let reason = fs.readFileSync("./api/blacklist/reason.txt", "utf8");
+    console.log(chalk.red.bold(`[Blacklist] Your Bot is blacklistet! Reason: ${reason}`))
+    return
+}
+console.log("The Blacklist isnt aktiv. But in next updates we will aktivate the Blacklist!")
+
 
 const { prefix, token, name, status, theme, profilpictureurl } = require('./settings.json');
 
 console.log(chalk.blue("=============================="));
-console.log(chalk.blue("             Q-BOT            "));
+console.log(chalk.blue("           MasterBot          "));
 console.log(chalk.blue("=============================="));
 console.log(chalk.blue(`[Deamon] starting Bot...`));
 
 client.on('ready', () => {
+    console.log(chalk.blue(`[Deamon] ${name} are online`));
+    console.log("")
+    console.log(chalk.blue("=============================="));
+    console.log(chalk.blue("             Stats            "));
+    console.log(chalk.blue("=============================="));
+    console.log(chalk.blue(`Channels: ${client.channels.cache.size}`));
+    console.log(chalk.blue(`Server: ${client.guilds.cache.size}`));
+    console.log(chalk.blue(`User: ${client.users.cache.size}`));
+    console.log(chalk.blue("=============================="));
 
-    console.log(chalk.blue(`[Deamon] ${name} are online!`));
 
 });
+
+//----------- Prefix -----------//
 
 let statuses = [
     `${prefix}help`,
@@ -38,7 +59,9 @@ setInterval(function () {
 }, 3000)
 
 
-//Commands
+//----------- Commands for Admin Features -----------//
+
+
 client.on("message", message => {
     let parts = message.content.split(" ");
 
@@ -46,8 +69,8 @@ client.on("message", message => {
         let embed = new Discord.MessageEmbed()
             .setTitle("Changelog")
             .setDescription("Version: "+version)
-            .addField("🛡 Updates:", "```\n[+] New Help Embed\n[+] Random Command\n[+] IQ Command\n```")
-            .addField("📅 Release:", "```24.02.2022```")
+            .addField("🛡 Updates:", "```\n[+] Stats\n[+] updater is now userfriendly\n[+] Blacklist\n```")
+            .addField("📅 Release:", "```25.02.2022```")
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
@@ -101,7 +124,7 @@ client.on("message", message => {
                     let embed = new Discord.MessageEmbed()
                         .setTitle("Update available")
                         .setColor("RED")
-                        .setDescription("Please update your bot immediately! It may be important security updates!")
+                        .setDescription("Please update your bot immediately! Your can download the update [here](https://github.com/Sharesystems/MasterBot/releases/latest). Here are the Docs to [update](https://github.com/Sharesystems/MasterBot#update-masterbot) your Bot")
 
                     message.channel.send(embed)
                     return
@@ -117,32 +140,12 @@ client.on("message", message => {
                 }
             })
     }
-    if (parts[0] == prefix + 'nuke') {
-        if (!message.member.hasPermission('MANAGE_CHANNELS')) {
-            let embed = new Discord.MessageEmbed()
-                .setTitle("❌ No Perms")
-                .setDescription("You do not have enough rights for this command!")
-                .setFooter(`${name} | version ${version}`)
-                .setThumbnail(profilpictureurl)
-                .setColor(theme)
-            return message.channel.send(embed)
-        }
-        message.channel.clone().then(channel => {
-            channel.setPosition(message.channel.position)
-            let embed = new Discord.MessageEmbed()
-                .setTitle("✅ Channel have been genuked")
-                .setColor(theme)
-                .setThumbnail(profilpictureurl)
-                .setFooter(`${name} | version ${version}`)
-                .setImage("https://i.gifer.com/6Ip.gif")
-                .setDescription("This channel has been successfully destroyed! All messages have been deleted.")
-            channel.send(embed)
-            console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}nuke`))
-        })
-        message.channel.delete()
-    }
 })
-//Demo Commands
+
+
+//----------- Other Commands -----------//
+
+
 client.on("message", function (message){
     let parts = message.content.split(" ");
 
@@ -177,11 +180,41 @@ client.on("message", function (message){
         message.channel.send(`loading...`).then(m => m.edit(`Your Random Number is: ${random.int(1, 99999999)}`))
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}random`))
     }
+    if (parts[0] == prefix + 'nuke') {
+        if (!message.member.hasPermission('MANAGE_CHANNELS')) {
+            let embed = new Discord.MessageEmbed()
+                .setTitle("❌ No Perms")
+                .setDescription("You do not have enough rights for this command!")
+                .setFooter(`${name} | version ${version}`)
+                .setThumbnail(profilpictureurl)
+                .setColor(theme)
+            return message.channel.send(embed)
+        }
+        message.channel.clone().then(channel => {
+            channel.setPosition(message.channel.position)
+            let embed = new Discord.MessageEmbed()
+                .setTitle("✅ Channel have been genuked")
+                .setColor(theme)
+                .setThumbnail(profilpictureurl)
+                .setFooter(`${name} | version ${version}`)
+                .setImage("https://i.gifer.com/6Ip.gif")
+                .setDescription("This channel has been successfully destroyed! All messages have been deleted.")
+            channel.send(embed)
+            console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}nuke`))
+        })
+        message.channel.delete()
+    }
     else if (parts[0].toLowerCase() == prefix + `iq`) {
         message.channel.send(`Scann IQ...`).then(m => m.edit(`The 100% accurate measurement showed that you have **${random.int(1, 200)}**IQ :exploding_head:`))
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}iq`))
     }
 })
+
+
+
+//----------- XPSystem -----------//
+
+
 client.on("message", function (message) {
     if (message.author.bot) return;
     var addXP = Math.floor(Math.random() * 8) + 3;
