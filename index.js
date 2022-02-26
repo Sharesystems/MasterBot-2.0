@@ -22,7 +22,7 @@ if (blacklist > 1) {
     console.log(chalk.red.bold(`[Blacklist] Your Bot is blacklistet! Reason: ${reason}`))
     return
 }
-console.log("The Blacklist isnt aktiv. But in next updates we will aktivate the Blacklist!")
+console.log("Info: The Blacklist isnt activ. But in next updates we will activate the Blacklist!")
 
 
 const { prefix, token, name, status, theme, profilpictureurl } = require('./settings.json');
@@ -69,8 +69,8 @@ client.on("message", message => {
         let embed = new Discord.MessageEmbed()
             .setTitle("Changelog")
             .setDescription("Version: "+version)
-            .addField("🛡 Updates:", "```\n[+] Stats\n[+] updater is now userfriendly\n[+] Blacklist\n```")
-            .addField("📅 Release:", "```25.02.2022```")
+            .addField("🛡 Updates:", "```\n[+] Ban\n[+] Kick\n```")
+            .addField("📅 Release:", "```26.02.2022```")
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
@@ -207,6 +207,100 @@ client.on("message", function (message){
     else if (parts[0].toLowerCase() == prefix + `iq`) {
         message.channel.send(`Scann IQ...`).then(m => m.edit(`The 100% accurate measurement showed that you have **${random.int(1, 200)}**IQ :exploding_head:`))
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}iq`))
+    }
+    if (message.content.startsWith(prefix+'ban')) {
+        console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}ban`))
+        const user = message.mentions.users.first();
+        if (user) {
+            const member = message.guild.members.resolve(user);
+            if (member) {
+                member
+                    .ban({
+                        reason: `Banned from ${name}`,
+                    })
+                    .then(() => {
+                        let embed = new Discord.MessageEmbed()
+                            .setTitle("✅ Successfully banned!")
+                            .setDescription(`The User **${user.tag}** was banned from **${message.guild.name}**`)
+                            .setColor(theme)
+                            .setFooter(`${name} | version ${version}`)
+                            .setImage("https://c.tenor.com/UQOlboL7W5cAAAAd/harry-potter-bye-bye.gif")
+                        message.channel.send(embed)
+                    })
+                    .catch(err => {
+                        let embed = new Discord.MessageEmbed()
+                            .setTitle("❌ ERROR")
+                            .setDescription("An unexpected error has occurred...")
+                            .addField("It could be because of this:", "- I have too few perms\n- The person mentioned is the owner")
+                            .setColor("RED")
+                            .setFooter(`${name} | version ${version}`)
+                        message.channel.send(embed);
+                        console.error(err);
+                    });
+            } else {
+                let embed = new Discord.MessageEmbed()
+                    .setTitle("❌ ERROR")
+                    .setDescription("I was unable to ban the member. ")
+                    .addField("Here's how you can fix this problem.", "- Check if the specified user is spelled correctly.\n-Check if the specified user is on the server")
+                    .setColor("RED")
+                    .setFooter(`${name} | version ${version}`)
+                message.channel.send(embed);
+            }
+        } else {
+            let embed = new Discord.MessageEmbed()
+                .setTitle("❌ ERROR")
+                .setDescription(`Usage: ${prefix}ban <@user>`)
+                .addField("Here's how you can fix this problem.", "- Ping the user")
+                .setColor("RED")
+                .setFooter(`${name} | version ${version}`)
+            message.channel.send(embed);
+        }
+    }
+    if (message.content.startsWith(prefix + 'kick')) {
+        console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}kick`))
+        const user = message.mentions.users.first();
+        if (user) {
+            const member = message.guild.members.resolve(user);
+            if (member) {
+                member
+                    .kick()
+                    .then(() => {
+                        let embed = new Discord.MessageEmbed()
+                            .setTitle("✅ Successfully kicked!")
+                            .setDescription(`The User **${user.tag}** was kicked from **${message.guild.name}**`)
+                            .setColor(theme)
+                            .setFooter(`${name} | version ${version}`)
+                            .setImage("https://c.tenor.com/tCPGyy8fUiUAAAAC/punt-kick.gif")
+                        message.channel.send(embed)
+                    })
+                    .catch(err => {
+                        let embed = new Discord.MessageEmbed()
+                            .setTitle("❌ ERROR")
+                            .setDescription("An unexpected error has occurred...")
+                            .addField("It could be because of this:", "- I have too few perms\n- The person mentioned is the owner")
+                            .setColor("RED")
+                            .setFooter(`${name} | version ${version}`)
+                        message.channel.send(embed);
+                        console.error(err);
+                    });
+            } else {
+                let embed = new Discord.MessageEmbed()
+                    .setTitle("❌ ERROR")
+                    .setDescription("I was unable to ban the member. ")
+                    .addField("Here's how you can fix this problem.", "- Check if the specified user is spelled correctly.\n-Check if the specified user is on the server")
+                    .setColor("RED")
+                    .setFooter(`${name} | version ${version}`)
+                message.channel.send(embed);
+            }
+        } else {
+            let embed = new Discord.MessageEmbed()
+                .setTitle("❌ ERROR")
+                .setDescription(`Usage: ${prefix}ban <@user>`)
+                .addField("Here's how you can fix this problem.", "- Ping the user")
+                .setColor("RED")
+                .setFooter(`${name} | version ${version}`)
+            message.channel.send(embed);
+        }
     }
 })
 
