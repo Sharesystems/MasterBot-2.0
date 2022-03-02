@@ -69,8 +69,8 @@ client.on("message", message => {
         let embed = new Discord.MessageEmbed()
             .setTitle("Changelog")
             .setDescription("Version: "+version)
-            .addField("🛡 Updates:", "```\n[+] Ban\n[+] Kick\n```")
-            .addField("📅 Release:", "```26.02.2022```")
+            .addField("🛡 Updates:", "```\n[+] New Embeds\n```")
+            .addField("📅 Release:", "```29.02.2022```")
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
@@ -106,6 +106,29 @@ client.on("message", message => {
             message.channel.send(embed)
             console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}ping`))
         })
+    }
+    else if (parts[0] == "!warn") {
+
+        if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.send('Dir fehlt folgende Berechtigung: BAN_MEMBERS')
+        message.react("✅")
+        let user = message.mentions.users.first();
+        let grund = message.content.split(" ").slice(2).join(" ");
+
+        if (!user) return message.channel.send("Du hast keinen User angegeben")
+
+        if (!grund) grund = "Kein Grund"
+
+        let embed = new Discord.MessageEmbed()
+            .setTitle("**<:no:929676573987180555> Verwahrung <:no:929676573987180555>**")
+            .setColor("#1c5e9c")
+            .setThumbnail("https://screen-upload.ml/uploads/oie_9bKtb1dwZaco.png")
+            .setFooter("Hugo - dsc.gg/hugo")
+            .setDescription(`Wahrung! Du wurdest verwarnt.\n\n**Grund:** ${grund}\n**User:** <@!${user.id}> \n\n mehr Infos: !userinfo <@!${user.id}>`)
+
+        message.channel.send(embed)
+        message.channel.send(`<@!${user.id}>`)
+        const usr = message.mentions.users.first() || message.author
+        console.log(`${usr.tag} hat !warn verwendet`)
     }
     if (message.content === prefix+"version") {
         fetch.default(`https://sharesystems.github.io/MasterBot/`)
@@ -150,7 +173,13 @@ client.on("message", function (message){
     let parts = message.content.split(" ");
 
     if (message.content == prefix+'bots') {
-        message.channel.send(`**${message.guild.name}** has **${message.guild.members.cache.filter(m => m.user.bot).size}** Bot(s) 🤖`)
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Bots")
+            .setDescription(`🤖 **${message.guild.name}** has **${message.guild.members.cache.filter(m => m.user.bot).size}** Bot(s)`)
+            .setColor(theme)
+            .setThumbnail(profilpictureurl)
+            .setFooter(`${name} | version ${version}`)
+        message.channel.send(embed)
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}bots`))
     }
     if (message.content.startsWith(prefix+"poll")) {
@@ -173,11 +202,23 @@ client.on("message", function (message){
 
     }
     if (message.content == prefix+'owner') {
-        message.channel.send(`The Owner of **${message.guild.name}** is **${message.guild.owner.user.tag}**`)
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Owner")
+            .setDescription(`👨‍💻 The Owner of **${message.guild.name}** is **${message.guild.owner.user.tag}**`)
+            .setColor(theme)
+            .setThumbnail(profilpictureurl)
+            .setFooter(`${name} | version ${version}`)
+        message.channel.send(embed)
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}owner`))
     }
     else if (parts[0].toLowerCase() == prefix + `random`) {
-        message.channel.send(`loading...`).then(m => m.edit(`Your Random Number is: ${random.int(1, 99999999)}`))
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Randomnumber")
+            .setDescription(`Your Random Number is: **${random.int(1, 99999999)}**`)
+            .setColor(theme)
+            .setThumbnail(profilpictureurl)
+            .setFooter(`${name} | version ${version}`)
+        message.channel.send(embed)
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}random`))
     }
     if (parts[0] == prefix + 'nuke') {

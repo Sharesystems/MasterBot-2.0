@@ -1,9 +1,9 @@
 {
-    "token": "Token here",
+    "token": "Token",
     "prefix": "!",
     "name": "Your Name",
     "status": "By Plexus",
     "theme": "#1214ff",
-    "profilpictureurl": "Your Link here",
+    "profilpictureurl": "https://cdn.discordapp.com/avatars/857312828787392572/56c76c4a57e4c75a2609af943a35c67c.png",
     "beta": "false"  
 }   
