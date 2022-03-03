@@ -25,7 +25,7 @@ if (blacklist > 1) {
 console.log("Info: The Blacklist isnt activ. But in next updates we will activate the Blacklist!")
 
 
-const { prefix, token, name, status, theme, profilpictureurl } = require('./settings.json');
+const { prefix, token, name, status, theme, profilpictureurl, antilink, antiinvite, } = require('./settings.json');
 
 console.log(chalk.blue("=============================="));
 console.log(chalk.blue("           MasterBot          "));
@@ -69,8 +69,8 @@ client.on("message", message => {
         let embed = new Discord.MessageEmbed()
             .setTitle("Changelog")
             .setDescription("Version: "+version)
-            .addField("🛡 Updates:", "```\n[+] New Embeds\n```")
-            .addField("📅 Release:", "```29.02.2022```")
+            .addField("🛡 Updates:", "```\n[+] Antilink\n[+] Antiinvite```")
+            .addField("📅 Release:", "```3.03.2022```")
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
@@ -85,7 +85,7 @@ client.on("message", message => {
             .addField(`Imporant Commands`, `${prefix}help - shows this menu\n${prefix}version - opens the version manager\n${prefix}changelog - shows the changelog\n${prefix}ping - shows your ping`)
             .addField("Fun", `${prefix}iq - shows your IQ\n${prefix}random - shows a random number\n${prefix}rank - shows your XP rate`)
             .addField("Infos", `${prefix}bots - the number of Bots\n${prefix}owner - shows the Ownertag`)
-            .addField("Admin", `${prefix}nuke - delete all messages\n${prefix}poll - start a poll`)
+            .addField("Admin", `${prefix}nuke - delete all messages\n${prefix}poll - start a poll\n${prefix}ban - ban a user\n${prefix}kick - kick a user`)
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
@@ -400,5 +400,38 @@ client.on("message", function (message) {
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}rank`))
     }
 })
+client.on("message", async message => {
+    if(antilink == "true") {
 
+    let link = ["http://", "https://"]
+    if (link.some(word => message.content.toLowerCase().includes(word))) {
+        await message.delete()
+        let embed = new Discord.MessageEmbed()
+            .setTitle("🔒 Link found")
+            .setDescription(`${message.author} please do not send links in the chat!`)
+            .setThumbnail(profilpictureurl)
+            .setFooter(name + " | version " + version)
+            .setColor(theme)
+
+        message.channel.send(embed)
+        console.log(chalk.green(`[Logs] ${message.author.tag} posted a link. This one has been deleted!`))
+        }
+    }
+    if (antiinvite == "true") {
+
+        let link = ["discord.com/invite", "discord.gg/", "dsc.gg", "discord.link", "discord.io"]
+        if (link.some(word => message.content.toLowerCase().includes(word))) {
+            await message.delete()
+            let embed = new Discord.MessageEmbed()
+                .setTitle("🔒 Invite found")
+                .setDescription(`${message.author} please do not send invitelinks in the chat!`)
+                .setThumbnail(profilpictureurl)
+                .setFooter(name + " | version " + version)
+                .setColor(theme)
+
+            message.channel.send(embed)
+            console.log(chalk.green(`[Logs] ${message.author.tag} posted a invitelink. This one has been deleted!`))
+        }
+    }
+})
 client.login(token)
