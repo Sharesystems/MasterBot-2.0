@@ -1,13 +1,16 @@
 # MasterBot
 
-### Checklist
-
-| features  | Version | available |
-| ----------| ------- | --------- |
-| XP System | 1.0.0   | :white_check_mark:|
-| Adsystem  | -       | :red_circle:|
-|Funcommands| 1.0.0  | :white_check_mark: |
-|Wallpaper  | -   | :red_circle: |
+### Features
+- Update Manager
+- Stats
+- XP System
+- Pollsystem
+- Nuke Command (only with admin perms)
+- Ban / Kick
+- many funcommands
+- Antiinvite
+- Antilink
+- Easy configuration
 
 Current version: **1.2.3**
 
