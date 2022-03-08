@@ -9,7 +9,7 @@
 |Funcommands| 1.0.0  | :white_check_mark: |
 |Wallpaper  | -   | :red_circle: |
 
-Current version: **1.2.2**
+Current version: **1.2.3**
 
 ### Installation
 ```
@@ -25,12 +25,12 @@ node index.js
 ```
 
 ### Update MasterBot
-1. Delete index.js, settings.json, api (folder) and package.json
+1. Delete index.js, settings.json and package.json
 2. Download the new files
 3. Upload it and edit the Settings.json again
 4. done!
 
-**DO NOT DELETE THE DATAS FOLDER!**
+**DO NOT DELETE THE DATAS AND THE API FOLDER!**
 
 ### Support
 Discord: https://discord.gg/c3CgfDQVJF or PLΞXUS#3294
