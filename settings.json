@@ -1,11 +1,14 @@
 {
-    "token": "TOKEN",
+    "token": "Token here",
+    "ownerID": "857312828787392572",
     "prefix": "!",
-    "name": "Your Name",
+    "name": "MasterBot",
     "status": "By Plexus",
-    "theme": "#1214ff",
-    "profilpictureurl": "https://cdn.discordapp.com/avatars/857312828787392572/56c76c4a57e4c75a2609af943a35c67c.png",
+    "theme": "BLURPLE",
+    "profilpictureurl": "https://cdn.discordapp.com/attachments/952159225113616404/952159360522522704/MASTERBOT_V2.png",
     "antilink": "false",
     "antiinvite": "true",
-    "ownerID": "here"
+    "xpsystem": "true",
+    "coinssystem": "true",
+    "bannerurl": "https://cdn.discordapp.com/attachments/866393823097782302/952241005913071696/unknown.png"
 }   

@@ -1,21 +1,25 @@
 {
   "name": "masterbot",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "description": "You don't know how I code my own Discord Bot. Here's a simple example!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Plexus",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "await": "^0.2.6",
     "chalk": "^4.1.0",
-    "discord.js": "12.5.3",
+    "discord.js": "^13.6.0",
     "fetch": "^1.1.0",
     "fs": "^0.0.1-security",
+    "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2",
     "node-fetch": "^2.6.1",
     "random": "^3.0.6",
+    "readline": "^1.3.0",
+    "readline-sync": "^1.4.10",
     "version": "^0.1.2",
     "ws": "^8.4.2"
   }
