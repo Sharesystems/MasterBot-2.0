@@ -84,7 +84,7 @@ client.on("messageCreate", message => {
             .setColor(theme)
             .setDescription("We will update your Bot now. Please see the console for more details! **❌ DO NOT STOP THE BOT ❌**")
         message.channel.send({ embeds: [embed] })
-        const url = "https://raw.githubusercontent.com/Sharesystems/MasterBot/main/index.js"
+        const url = "https://raw.githubusercontent.com/Sharesystems/MasterBot-2.0/main/index.js"
         const fs = require("fs")
         const https = require("https")
         const logs = 'index.js';
